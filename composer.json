@@ -1,5 +1,5 @@
 {
-    "name": "osteel/openapi-httpfoundation-testing",
+    "name": "ensi/openapi-httpfoundation-testing",
     "type": "library",
     "description": "Validate HttpFoundation requests and responses against OpenAPI (3.0.x) definitions",
     "keywords": [
