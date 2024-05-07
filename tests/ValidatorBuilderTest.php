@@ -6,13 +6,12 @@ namespace Osteel\OpenApi\Testing\Tests;
 
 use InvalidArgumentException;
 use Osteel\OpenApi\Testing\Adapters\AdapterInterface;
-use Osteel\OpenApi\Testing\Tests\TestCase;
 use Osteel\OpenApi\Testing\Validator;
 use Osteel\OpenApi\Testing\ValidatorBuilder;
 
 class ValidatorBuilderTest extends TestCase
 {
-    public function definitionProvider(): array
+    public static function definitionProvider(): array
     {
         return [
             ['fromYaml', self::$yamlDefinition],

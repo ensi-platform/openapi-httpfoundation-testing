@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Osteel\OpenApi\Testing\Tests;
 
 use Osteel\OpenApi\Testing\Exceptions\ValidationException;
-use Osteel\OpenApi\Testing\Tests\TestCase;
 use Osteel\OpenApi\Testing\ValidatorBuilder;
 
 class ValidatorTest extends TestCase
@@ -28,7 +27,7 @@ class ValidatorTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function requestTypeProvider(): array
+    public static function requestTypeProvider(): array
     {
         return [
             ['httpFoundationRequest'],
@@ -82,7 +81,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function bodylessRequestMethodProvider(): array
+    public static function bodylessRequestMethodProvider(): array
     {
         return [
             ['delete'],
@@ -104,7 +103,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function requestMethodProvider(): array
+    public static function requestMethodProvider(): array
     {
         return [
             ['patch'],
@@ -130,7 +129,7 @@ class ValidatorTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function responseTypeProvider(): array
+    public static function responseTypeProvider(): array
     {
         return [
             ['httpFoundationResponse'],
@@ -161,7 +160,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function responseMethodProvider(): array
+    public static function responseMethodProvider(): array
     {
         return [
             ['delete'],
@@ -190,7 +189,7 @@ class ValidatorTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             ['/test'],
