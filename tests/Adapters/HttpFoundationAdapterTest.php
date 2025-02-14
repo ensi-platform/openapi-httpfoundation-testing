@@ -9,13 +9,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use stdClass;
 
 class HttpFoundationAdapterTest extends TestCase
 {
-    /**
-     * @var HttpFoundationAdapter
-     */
-    private $sut;
+    private HttpFoundationAdapter $sut;
 
     protected function setUp(): void
     {
@@ -24,40 +22,40 @@ class HttpFoundationAdapterTest extends TestCase
         $this->sut = new HttpFoundationAdapter();
     }
 
-    public function testItDoesNotConvertTheMessageBecauseTheTypeIsNotSupported()
+    public function test_it_does_not_convert_the_message_because_the_type_is_not_supported()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unsupported InvalidArgumentException object received');
+        $this->expectExceptionMessage('Unsupported stdClass object received');
 
-        $this->sut->convert(new InvalidArgumentException());
+        $this->sut->convert(new stdClass());
     }
 
-    public function testItConvertsTheHttpFoundationRequest()
+    public function test_it_converts_the_http_foundation_request()
     {
         $result = $this->sut->convert(Request::create('/foo'));
 
         $this->assertInstanceOf(ServerRequestInterface::class, $result);
     }
 
-    public function testItLeavesTheRequestInterfaceUntouched()
+    public function test_it_leaves_the_request_interface_untouched()
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $result  = $this->sut->convert($request);
+        $result = $this->sut->convert($request);
 
         $this->assertEquals($request, $result);
     }
 
-    public function testItConvertsAHttpFoundationResponse()
+    public function test_it_converts_a_http_foundation_response()
     {
         $result = $this->sut->convert(new Response());
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 
-    public function testItLeavesTheResponseInterfaceUntouched()
+    public function test_it_leaves_the_response_interface_untouched()
     {
         $response = $this->createMock(ResponseInterface::class);
-        $result   = $this->sut->convert($response);
+        $result = $this->sut->convert($response);
 
         $this->assertEquals($response, $result);
     }
