@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Osteel\OpenApi\Testing\Tests;
 
 use InvalidArgumentException;
-use Osteel\OpenApi\Testing\Adapters\AdapterInterface;
+use Osteel\OpenApi\Testing\Adapters\MessageAdapterInterface;
+use Osteel\OpenApi\Testing\Cache\CacheAdapterInterface;
 use Osteel\OpenApi\Testing\Validator;
 use Osteel\OpenApi\Testing\ValidatorBuilder;
+use stdClass;
 
 class ValidatorBuilderTest extends TestCase
 {
@@ -28,7 +30,7 @@ class ValidatorBuilderTest extends TestCase
     /**
      * @dataProvider definitionProvider
      */
-    public function testItBuildsAValidator(string $method, string $definition)
+    public function testItBuildsAValidator(string $method, string $definition): void
     {
         $result = ValidatorBuilder::$method($definition)->getValidator();
 
@@ -42,24 +44,44 @@ class ValidatorBuilderTest extends TestCase
         $this->assertTrue($result->get($response, static::PATH));
     }
 
-    public function testItDoesNotSetTheAdapterBecauseItsTypeIsInvalid()
+    public function testItDoesNotSetTheAdapterBecauseItsTypeIsInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'Class %s does not implement the %s interface',
-            InvalidArgumentException::class,
-            AdapterInterface::class
+            stdClass::class,
+            MessageAdapterInterface::class
         ));
 
-        ValidatorBuilder::fromYaml(self::$yamlDefinition)->setAdapter(InvalidArgumentException::class);
+        ValidatorBuilder::fromYaml(self::$yamlDefinition)->setMessageAdapter(stdClass::class);
     }
 
-    public function testItSetsTheAdapter()
+    public function testItSetsTheAdapter(): void
     {
         ValidatorBuilder::fromYaml(self::$yamlDefinition)
-            ->setAdapter(get_class($this->createMock(AdapterInterface::class)));
+            ->setMessageAdapter($this->createMock(MessageAdapterInterface::class)::class);
 
         // No exception means the test was successful.
         $this->assertTrue(true);
+    }
+
+    public function testItDoesNotSetTheCacheAdapterBecauseItsTypeIsInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Class %s does not implement the %s interface',
+            stdClass::class,
+            CacheAdapterInterface::class
+        ));
+
+        ValidatorBuilder::fromYaml(self::$yamlDefinition)->setCacheAdapter(stdClass::class);
+    }
+
+    public function testItSetsTheCacheAdapter(): void
+    {
+        ValidatorBuilder::fromYaml(self::$yamlDefinition)
+            ->setCacheAdapter($this->createMock(CacheAdapterInterface::class)::class);
+
+        $this->addToAssertionCount(1);
     }
 }
